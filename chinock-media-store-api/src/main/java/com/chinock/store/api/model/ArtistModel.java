@@ -13,7 +13,7 @@ public class ArtistModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "artistid")
+    @Column(name = "artist_id")
     private Integer artistId;
 
     @Column(name = "name", length = 255)

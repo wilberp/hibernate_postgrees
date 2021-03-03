@@ -1,8 +1,11 @@
 package com.chinock.store.api.controller;
 
+import com.chinock.store.api.exception.ResourceNotFoundException;
 import com.chinock.store.api.model.ArtistModel;
 import com.chinock.store.api.repository.ArtistRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController()
@@ -35,7 +38,21 @@ public class MediaController {
     public ArtistModel saveArtist(@RequestBody ArtistModel artist){
         ArtistModel artistr = repository.save(artist);
         return  repository.findById(artistr.getArtistId()).orElseThrow(() -> new RuntimeException("não achou o cadastro de artista"));
-
     }
 
+    @PutMapping("/update-artist")
+    public ArtistModel updateArtist(@RequestBody ArtistModel artist){
+        ArtistModel artistr = repository.save(artist);
+        return  repository.findById(artistr.getArtistId()).orElseThrow(() -> new RuntimeException("não achou o cadastro de artista"));
+    }
+
+    @DeleteMapping("/delete-artist/{id}")
+    public ResponseEntity<?> deleteArtistById(@PathVariable("id")  Integer id) {
+        ArtistModel artistModel = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("não achou o cadastro  artista ID"));
+        if (artistModel != null) {
+            repository.deleteById(id);
+            return ResponseEntity.ok().build();
+        }
+        return null;
+    }
 }
